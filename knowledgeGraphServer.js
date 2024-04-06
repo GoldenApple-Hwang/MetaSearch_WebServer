@@ -12,3 +12,6 @@ app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, '../metasearch_knowledgegraph/build/index.html'))
 })
 
+app.get('*', function (req, res) {
+  res.sendFile(path.join(__dirname, '../GoldenApple/metasearch_knowledgegraph/build/index.html'));
+});
