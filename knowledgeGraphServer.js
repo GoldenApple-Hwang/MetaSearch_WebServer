@@ -2,6 +2,8 @@ const express = require('express')
 const app = express()
 const path = require('path')
 
+const multer  = require('multer'); //이미지 전송을 위함
+
 app.listen(8080, function () {
   console.log('listening on 8080')
 })
