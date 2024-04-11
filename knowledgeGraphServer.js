@@ -85,6 +85,25 @@ app.get('/api/graphData/:dbName', async (req, res) => {
   }
 }); 
 
+// 파일 저장 위치와 파일 이름을 설정
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'E:/images') // 업로드된 파일이 저장될 서버 내 폴더 경로
+  },
+  filename: function (req, file, cb) {
+    // 사용자가 업로드한 원래의 파일 이름을 사용
+    cb(null, file.originalname)
+  }
+})
+
+const upload = multer({ storage: storage })
+
+// 파일 업로드를 위한 경로 설정
+app.post('/upload', upload.single('image'), function (req, res, next) {
+  // 요청 처리 로직...
+  res.send('File uploaded successfully');
+})
+
 app.get('*', function (req, res) {
   res.sendFile(path.join(__dirname, '../metasearch_knowledgegraph/build/index.html'));
 });
