@@ -6,12 +6,18 @@ const fileUploadRouter = require('./fileUpload');
 const getGraphData = require('./graphData');
 const circleToSearch = require('./circleToSearch');
 
+// 로깅 미들웨어
+router.use((req, res, next) => {
+  console.log(`Incoming request: ${req.method} ${req.url}`);
+  next();
+});
+
 router.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, '../../metasearch_knowledgegraph/build/index.html'));
 });
 
-// 파일 업로드 라우터를 '/upload' 경로에 매핑합니다.
-router.use('/upload', fileUploadRouter);
+// 파일 업로드 라우터를 '/android/uploadimg' 경로에 매핑합니다.
+router.use('/android/uploadimg', fileUploadRouter);
 
 //그래프 데이터를 가저옴
 router.get('/api/graphData/:dbName', getGraphData);
@@ -21,11 +27,6 @@ router.post('/android/circleToSearch', circleToSearch);
 
 //AI Server에서 import할 .csv파일을 받아서 "주소" 에 저장
 //router.post('/aiserver/uploadcsv', );
-
-router.use((req, res, next) => {
-    console.log(`Incoming request: ${req.method} ${req.url}`);
-    next();
-});
 
 router.get('*', function (req, res) {
   res.sendFile(path.join(__dirname, '../../metasearch_knowledgegraph/build/index.html'));
