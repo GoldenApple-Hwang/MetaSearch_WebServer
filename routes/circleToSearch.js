@@ -13,6 +13,12 @@ router.post("/android/circleToSearch", async (req, res) => {
     );
 
     const photos = await searchPhotos(properties, dbName);
+
+    // 공통된 사진과 개별 사진이 모두 비어있는 경우
+    if (photos.commonPhotos.length === 0 && Object.keys(photos.individualPhotos).length === 0) {
+      return res.status(200).json({ message: "No photos found for the given properties." });
+    }
+    
     res.json({ photos }); // 응답으로 사진 이름들을 JSON 형태로 반환
   } catch (error) {
     console.error("Error processing search request:", error);
