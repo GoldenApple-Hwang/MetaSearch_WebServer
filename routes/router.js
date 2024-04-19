@@ -23,7 +23,7 @@ router.use('/android/uploadimg', fileUploadRouter);
 router.get('/api/graphData/:dbName', getGraphData);
 
 //안드로이드에서 circleToSearch 된 값을 받아서 그래프에서 검색
-router.post('/android/circleToSearch', circleToSearch);
+router.use('/android/circleToSearch', circleToSearch);
 
 //AI Server에서 import할 .csv파일을 받아서 "주소" 에 저장
 //router.post('/aiserver/uploadcsv', );
