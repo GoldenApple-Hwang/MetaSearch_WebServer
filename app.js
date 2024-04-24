@@ -1,18 +1,35 @@
-import dotenv from 'dotenv';
-dotenv.config();
+// config.js 파일 import
+import './config.js';
 
-import express, { json, static as expressStatic } from 'express';
-const app = express();
-import { join } from 'path';
+import express from 'express';
 import cors from 'cors';
-import router from './routes/router';
+import { json, static as expressStatic } from 'express';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+import router from './routes/router.js';
 
+
+const app = express();
+
+// __dirname 설정
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// 미들웨어 설정
 app.use(cors());
 app.use(json());
 app.use(expressStatic(join(__dirname, '../metasearch_knowledgegraph/build')));
 
+// 라우터 설정
 app.use('/', router);
 
-app.listen(8080, function () {
-    console.log('listening on 8080')
+// 서버 리스닝
+app.listen(8080, () => {
+    console.log('Listening on 8080');
+});
+
+// 에러 핸들링 미들웨어
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something went wrong!');
 });
