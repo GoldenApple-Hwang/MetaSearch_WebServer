@@ -1,6 +1,6 @@
 // routes/graphData.js
 import { Router } from 'express';
-import { fetchGraphData } from '../services/graphDataService';
+import fetchGraphData from '../services/graphDataService.js';
 const router = Router();
 
 router.get('/api/graphData/:dbName', async (req, res) => {
