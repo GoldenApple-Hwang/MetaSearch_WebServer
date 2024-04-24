@@ -1,6 +1,6 @@
 // routes/circleToSearch.js
 import { Router } from "express";
-import { searchPhotos } from "../services/circleToSearchService";
+import searchPhotos from "../services/circleToSearchService.js";
 const router = Router();
 
 // '/android/circleToSearch' 경로에 대한 POST 요청 처리
