@@ -1,10 +1,16 @@
 // routes/router.js
 import { Router } from 'express';
-import { join } from 'path';
-import fileUploadRouter from './fileUpload';
-import getGraphData from './graphData';
-import circleToSearch from './circleToSearch';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+import fileUploadRouter from './fileUpload.js';
+import getGraphData from './graphData.js';
+import circleToSearch from './circleToSearch.js';
 const router = Router();
+
+// __dirname 설정
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 
 // 로깅 미들웨어
 router.use((req, res, next) => {
