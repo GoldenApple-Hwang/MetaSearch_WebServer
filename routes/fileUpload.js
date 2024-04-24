@@ -1,6 +1,6 @@
 // routes/fileUpload.js
 import { Router } from 'express';
-import upload from '../middlewares/fileUpload.js';
+import upload from '../middlewares/fileUploadMiddleware.js';
 import validateFile from '../services/fileService.js';
 const router = Router();
 
