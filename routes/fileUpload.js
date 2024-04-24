@@ -1,7 +1,7 @@
 // routes/fileUpload.js
 import { Router } from 'express';
-import { upload } from '../middlewares/fileUpload';
-import { validateFile } from '../services/fileService';
+import upload from '../middlewares/fileUpload.js';
+import validateFile from '../services/fileService.js';
 const router = Router();
 
 // 이제 이 라우터는 '/android/uploadimg'로 매핑될 때 루트 경로 '/'에서 작동합니다.

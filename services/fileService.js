@@ -19,4 +19,4 @@ function validateFile(file) {
   return file; // Return file if validation is successful
 }
 
-export default { validateFile };
+export default validateFile;
