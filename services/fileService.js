@@ -1,5 +1,5 @@
 // services/fileServices.js
-const path = require('path');
+import path from 'path';
 
 function validateFile(file) {
   if (!file) {
@@ -19,4 +19,4 @@ function validateFile(file) {
   return file; // Return file if validation is successful
 }
 
-module.exports = { validateFile };
+export default { validateFile };

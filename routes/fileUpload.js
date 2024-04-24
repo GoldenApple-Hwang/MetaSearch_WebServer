@@ -1,10 +1,10 @@
 // routes/fileUpload.js
-const express = require('express');
-const router = express.Router();
-const { upload } = require('../middlewares/fileUpload');
-const { validateFile } = require('../services/fileService');
+import { Router } from 'express';
+import { upload } from '../middlewares/fileUpload';
+import { validateFile } from '../services/fileService';
+const router = Router();
 
-// 이제 이 라우터는 '/upload'로 매핑될 때 루트 경로 '/'에서 작동합니다.
+// 이제 이 라우터는 '/android/uploadimg'로 매핑될 때 루트 경로 '/'에서 작동합니다.
 router.post('/', upload.single('image'), (req, res, next) => {
   try {
     validateFile(req.file);
@@ -14,4 +14,4 @@ router.post('/', upload.single('image'), (req, res, next) => {
   }
 });
 
-module.exports = router;
+export default router;

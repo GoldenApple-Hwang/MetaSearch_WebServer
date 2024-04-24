@@ -1,5 +1,6 @@
 // services/circleToSearchService.js
-const { session, driver } = require("../models/neo4jModel");
+import neo4jModel from "../models/neo4jModel";
+const { session, driver } = neo4jModel;
 
 async function searchPhotos(properties, dbName) {
   const dbSession = session({ database: dbName });
@@ -50,4 +51,4 @@ process.on("exit", () => {
   driver.close();
 });
 
-module.exports = { searchPhotos };
+export default { searchPhotos };

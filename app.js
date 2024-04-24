@@ -1,15 +1,15 @@
-require('dotenv').config();
+import dotenv from 'dotenv';
+dotenv.config();
 
-// app.js
-const express = require('express');
+import express, { json, static as expressStatic } from 'express';
 const app = express();
-const path = require('path');
-const cors = require('cors');
-const router = require('./routes/router');
+import { join } from 'path';
+import cors from 'cors';
+import router from './routes/router';
 
 app.use(cors());
-app.use(express.json());
-app.use(express.static(path.join(__dirname, '../metasearch_knowledgegraph/build')));
+app.use(json());
+app.use(expressStatic(join(__dirname, '../metasearch_knowledgegraph/build')));
 
 app.use('/', router);
 

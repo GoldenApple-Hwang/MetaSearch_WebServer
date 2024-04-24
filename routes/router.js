@@ -1,10 +1,10 @@
 // routes/router.js
-const express = require('express');
-const router = express.Router();
-const path = require('path');
-const fileUploadRouter = require('./fileUpload');
-const getGraphData = require('./graphData');
-const circleToSearch = require('./circleToSearch');
+import { Router } from 'express';
+import { join } from 'path';
+import fileUploadRouter from './fileUpload';
+import getGraphData from './graphData';
+import circleToSearch from './circleToSearch';
+const router = Router();
 
 // 로깅 미들웨어
 router.use((req, res, next) => {
@@ -13,7 +13,7 @@ router.use((req, res, next) => {
 });
 
 router.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname, '../../metasearch_knowledgegraph/build/index.html'));
+  res.sendFile(join(__dirname, '../../metasearch_knowledgegraph/build/index.html'));
 });
 
 // 파일 업로드 라우터를 '/android/uploadimg' 경로에 매핑합니다.
@@ -25,11 +25,11 @@ router.get('/api/graphData/:dbName', getGraphData);
 //안드로이드에서 circleToSearch 된 값을 받아서 그래프에서 검색
 router.use('/android/circleToSearch', circleToSearch);
 
-//AI Server에서 import할 .csv파일을 받아서 "주소" 에 저장
-//router.post('/aiserver/uploadcsv', );
+//AI Server에서 import할 .csv파일을 받아서 "C:\Users\hwang\.Neo4jDesktop\relate-data\dbmss\dbms-03774803-1a7b-4c49-bbce-e4aeb8c59827\import" 에 저장
+//router.use('/aiserver/uploadcsv', );
 
 router.get('*', function (req, res) {
-  res.sendFile(path.join(__dirname, '../../metasearch_knowledgegraph/build/index.html'));
+  res.sendFile(join(__dirname, '../../metasearch_knowledgegraph/build/index.html'));
 });
 
-module.exports = router;
+export default router;

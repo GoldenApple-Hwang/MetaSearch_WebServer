@@ -1,7 +1,7 @@
 // routes/circleToSearch.js
-const express = require("express");
-const router = express.Router();
-const { searchPhotos } = require("../services/circleToSearchService");
+import { Router } from "express";
+import { searchPhotos } from "../services/circleToSearchService";
+const router = Router();
 
 // '/android/circleToSearch' 경로에 대한 POST 요청 처리
 router.post("/", async (req, res) => {
@@ -26,4 +26,4 @@ router.post("/", async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

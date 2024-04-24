@@ -1,4 +1,4 @@
-const neo4j = require('../models/neo4jModel');
+import neo4j from '../models/neo4jModel';
 
 async function fetchGraphData(dbName) {
   const session = neo4j.session({ database: dbName });
@@ -54,5 +54,5 @@ function getGraphData(result) {
     return { nodes, links };
   }
 
-module.exports = { fetchGraphData };
+export default { fetchGraphData };
   

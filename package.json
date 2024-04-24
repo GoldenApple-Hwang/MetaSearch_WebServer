@@ -1,6 +1,7 @@
 {
   "name": "metasearch_webserver",
   "version": "1.0.0",
+  "type": "module",
   "description": "**> npm init -y**\r **> npm install express**",
   "main": "index.js",
   "scripts": {
