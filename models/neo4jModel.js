@@ -15,38 +15,41 @@ function session(options) {
 }
 
 async function createDatabaseIfNotExists(dbName) {
-  const systemSession = driver.session({ database: 'system' }); // Neo4j 데이터베이스 관리 시스템(DBMS)의 관리 작업을 수행하는 데 사용되는 특별한 데이터베이스
+  const systemSession = driver.session({ database: "system" }); // Neo4j 데이터베이스 관리 시스템(DBMS)의 관리 작업을 수행하는 데 사용되는 특별한 데이터베이스
   try {
-      // 데이터베이스 존재 여부 확인
-      let result = await systemSession.run(`SHOW DATABASES`);
-      const databases = result.records.map(record => record.get('name'));
-      if (!databases.includes(dbName)) {
-          // 데이터베이스가 존재하지 않으면 생성
-          await systemSession.run(`CREATE DATABASE ${dbName}`);
-          console.log(`Database ${dbName} created`);
-      }
+    // 데이터베이스 존재 여부 확인
+    let result = await systemSession.run(`SHOW DATABASES`);
+    const databases = result.records.map((record) => record.get("name"));
+    if (!databases.includes(dbName)) {
+      // 데이터베이스가 존재하지 않으면 생성
+      await systemSession.run(`CREATE DATABASE ${dbName}`);
+      console.log(`Database ${dbName} created`);
+    } else {
+      // 데이터베이스가 이미 존재하는 경우
+      console.log(`Database ${dbName} already exists.`);
+    }
   } catch (error) {
-      console.error('Error in database creation/check:', error);
+    console.error("Error in database creation/check:", error);
   } finally {
-      await systemSession.close();
+    await systemSession.close();
   }
 }
 
 async function clearDatabase(dbName) {
   const session = driver.session({ database: dbName });
   try {
-      await session.run('MATCH (n) DETACH DELETE n');
-      console.log(`All data in ${dbName} has been cleared.`);
+    await session.run("MATCH (n) DETACH DELETE n");
+    console.log(`All data in ${dbName} has been cleared.`);
   } catch (error) {
-      console.error(`Error clearing data in ${dbName}:`, error);
+    console.error(`Error clearing data in ${dbName}:`, error);
   } finally {
-      await session.close();
+    await session.close();
   }
 }
 
 async function loadCsvToNeo4j(dbName) {
   await createDatabaseIfNotExists(dbName);
-  await clearDatabase(dbName);  // 먼저 데이터베이스를 비움
+  await clearDatabase(dbName); // 먼저 데이터베이스를 비움
   const session = driver.session({ database: dbName });
   try {
     const result = await session.run(
