@@ -8,7 +8,7 @@ const router = Router();
 router.post('/', upload.single('image'), (req, res, next) => {
   try {
     validateFile(req.file);
-    res.send('File uploaded successfully');
+    res.send("images uploaded successfully");
   } catch (error) {
     res.status(400).send(error.message);
   }
