@@ -32,8 +32,21 @@ async function createDatabaseIfNotExists(dbName) {
   }
 }
 
+async function clearDatabase(dbName) {
+  const session = driver.session({ database: dbName });
+  try {
+      await session.run('MATCH (n) DETACH DELETE n');
+      console.log(`All data in ${dbName} has been cleared.`);
+  } catch (error) {
+      console.error(`Error clearing data in ${dbName}:`, error);
+  } finally {
+      await session.close();
+  }
+}
+
 async function loadCsvToNeo4j(dbName) {
   await createDatabaseIfNotExists(dbName);
+  await clearDatabase(dbName);  // 먼저 데이터베이스를 비움
   const session = driver.session({ database: dbName });
   try {
     const result = await session.run(
