@@ -18,6 +18,9 @@ const __dirname = dirname(__filename);
 // 미들웨어 설정
 app.use(cors());
 app.use(json());
+
+// 정적 파일 디렉토리 설정
+app.use(expressStatic(join(__dirname, 'public'))); // public 폴더 내의 파일들을 정적 파일로 제공
 app.use(expressStatic(join(__dirname, '../metasearch_knowledgegraph/build')));
 
 // 라우터 설정
