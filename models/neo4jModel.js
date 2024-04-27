@@ -59,17 +59,22 @@ async function clearDatabase(dbName) {
 }
 
 async function loadCsvToNeo4j(dbName) {
-  await createDatabaseIfNotExists(dbName);
-  await clearDatabase(dbName); // 먼저 데이터베이스를 비움
+  await createDatabaseIfNotExists(dbName); //데이터베이스가 존재하지 않으면 먼저 데이터베이스를 만든다
   const session = driver.session({ database: dbName });
+
   try {
+    // CSV 파일 로드 및 데이터 처리. 노드, 관계 모두 중복되지 않도록. 
     const result = await session.run(
-      `LOAD CSV WITH HEADERS FROM 'file:///${dbName}.csv' AS row
-                MERGE (e1:Entity {name: row.Entity1})
-                MERGE (e2:Entity {name: row.Entity2})
-                WITH e1, e2, row
-                CALL apoc.create.relationship(e1, row.Relationship, {}, e2) YIELD rel
-                RETURN e1, rel, e2`
+      `CALL apoc.periodic.iterate(
+        "LOAD CSV WITH HEADERS FROM 'file:///${dbName}.csv' AS row RETURN row",
+        "MERGE (e1:Entity {name: row.Entity1})
+         MERGE (e2:Entity {name: row.Entity2})
+         WITH e1, e2, row
+         CALL apoc.merge.relationship(e1, row.Relationship, {}, {}, e2, {})
+         YIELD rel
+         RETURN e1, rel, e2",
+        {batchSize:1000, parallel:true}
+      )`
     );
     console.log(`${dbName} loaded to Neo4j ${dbName} database successfully`);
   } catch (error) {
