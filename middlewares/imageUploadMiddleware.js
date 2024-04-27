@@ -1,4 +1,4 @@
-//middlewares/fileUploadMiddleware.js
+//middlewares/imageUploadMiddleware.js
 import multer, { diskStorage } from 'multer';
 import { extname, basename } from 'path';
 

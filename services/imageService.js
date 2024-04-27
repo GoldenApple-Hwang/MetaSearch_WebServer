@@ -1,7 +1,5 @@
-// services/fileServices.js
-import path from 'path';
-
-function validateFile(file) {
+// services/imageServices.js
+function validateImage(file) {
   if (!file) {
     throw new Error('No file uploaded.');
   }
@@ -19,4 +17,4 @@ function validateFile(file) {
   return file; // Return file if validation is successful
 }
 
-export default validateFile;
+export default validateImage;
