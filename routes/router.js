@@ -2,7 +2,7 @@
 import { Router } from 'express';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
-import fileUploadRouter from './fileUpload.js';
+import imageUploadRouter from './imageUpload.js';
 import getGraphData from './graphData.js';
 import circleToSearch from './circleToSearch.js';
 import csvUploadRouter from './csvUpload.js'
@@ -27,7 +27,7 @@ router.get('/', function (req, res) {
 });
 
 // 파일 업로드 라우터를 '/android/uploadimg' 경로에 매핑합니다.
-router.use('/android/uploadimg', fileUploadRouter);
+router.use('/android/uploadimg', imageUploadRouter);
 
 //그래프 데이터를 가저옴
 router.get('/api/graphData/:dbName', getGraphData);
