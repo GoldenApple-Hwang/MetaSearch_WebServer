@@ -24,6 +24,17 @@ async function createDatabaseIfNotExists(dbName) {
       // 데이터베이스가 존재하지 않으면 생성
       await systemSession.run(`CREATE DATABASE ${dbName}`);
       console.log(`Database ${dbName} created`);
+      //해당 db에 대한 세션을 열어 인덱스 생성
+      const session = driver.session({ database: dbName });
+      try {
+        // 인덱스 생성
+        await session.run(`CREATE INDEX FOR (e:Entity) ON (e.name)`);
+        console.log(`Index for ${dbName} on 'name' created`);
+      } catch (indexError) {
+        console.error("Error creating index:", indexError);
+      } finally {
+        await session.close();
+      }
     } else {
       // 데이터베이스가 이미 존재하는 경우
       console.log(`Database ${dbName} already exists.`);
