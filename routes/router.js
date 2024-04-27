@@ -7,6 +7,8 @@ import getGraphData from './graphData.js';
 import circleToSearch from './circleToSearch.js';
 import csvUploadRouter from './csvUpload.js'
 import sendCsvFile from './sendCsvFile.js'
+import nlqSearch from './nlqSerach.js'
+
 const router = Router();
 
 // __dirname 설정
@@ -38,6 +40,9 @@ router.use('/aiserver/uploadcsv', csvUploadRouter);
 
 //AI Server에서 dbName과 함께 요청이 들어오면 다시 해당 이름의 csv 파일을 보내줌
 router.use('/neo4jserver/csv', sendCsvFile)
+
+//안드로이드에서 DB이름과 자연어 검색 쿼리를 받아 결과(사진 이름)을 반환
+router.use('/nlqsearch', nlqSearch)
 
 router.get('*', function (req, res) {
   res.sendFile(join(__dirname, '../../metasearch_knowledgegraph/build/index.html'));
