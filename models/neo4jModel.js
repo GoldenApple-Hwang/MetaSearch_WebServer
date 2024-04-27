@@ -68,4 +68,19 @@ async function loadCsvToNeo4j(dbName) {
   }
 }
 
-export default { session, driver, loadCsvToNeo4j };
+// 자연어 쿼리를 실행하는 함수
+async function executeQuery(dbName, query) {
+  const session = driver.session({ database: dbName });
+  try {
+    const result = await session.run(query);
+    console.log(`Query executed successfully on ${dbName}`);
+    return result; // 실행 결과 반환
+  } catch (error) {
+    console.error(`Error executing query on ${dbName}:`, error);
+    throw error; // 에러 발생 시, 이를 호출한 곳에서 처리할 수 있도록 예외를 던짐
+  } finally {
+    await session.close();
+  }
+}
+
+export default { session, driver, loadCsvToNeo4j, executeQuery };
