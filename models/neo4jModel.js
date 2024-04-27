@@ -60,6 +60,7 @@ async function clearDatabase(dbName) {
 
 async function loadCsvToNeo4j(dbName) {
   await createDatabaseIfNotExists(dbName); //데이터베이스가 존재하지 않으면 먼저 데이터베이스를 만든다
+  await clearDatabase(dbName); // 트리플 삭제를 반영하기 위해 먼저 데이터베이스를 비움
   const session = driver.session({ database: dbName });
 
   try {
