@@ -100,4 +100,25 @@ async function executeQuery(dbName, query) {
   }
 }
 
-export default { session, driver, loadCsvToNeo4j, executeQuery };
+async function getPeopleFrequency(dbName) {
+  const session = driver.session({ database: dbName });
+  try {
+    const result = await session.run(
+      "MATCH (e1:Entity)-[r:인물]->(e2:Entity) " +
+      "RETURN e2.name AS Entity, COUNT(r) AS Frequency " +
+      "ORDER BY Frequency DESC"
+    );
+    console.log(`People frequency data retrieved successfully from ${dbName}`);
+    return result.records.map(record => ({
+      entity: record.get('Entity'),
+      frequency: record.get('Frequency')
+    }));
+  } catch (error) {
+    console.error(`Error retrieving people frequency data from ${dbName}:`, error);
+    throw error;
+  } finally {
+    await session.close();
+  }
+}
+
+export default { session, driver, loadCsvToNeo4j, executeQuery, getPeopleFrequency };
