@@ -8,6 +8,8 @@ import circleToSearch from './circleToSearch.js';
 import csvUploadRouter from './csvUpload.js'
 import sendCsvFile from './sendCsvFile.js'
 import nlqSearch from './nlqSerach.js'
+import getPeopleFrequency from './peopleFrequencyData.js';
+
 
 const router = Router();
 
@@ -43,6 +45,9 @@ router.use('/neo4jserver/csv', sendCsvFile)
 
 //안드로이드에서 DB이름과 자연어 검색 쿼리를 받아 결과(사진 이름)을 반환
 router.use('/nlqsearch', nlqSearch)
+
+//버블차트에 인물 빈도를 시각화 하기 위해 그레프에서 데이터를 가져옴
+router.use('/peoplebubblechart', getPeopleFrequency)
 
 router.get('*', function (req, res) {
   res.sendFile(join(__dirname, '../../metasearch_knowledgegraph/build/index.html'));
