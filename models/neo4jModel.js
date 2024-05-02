@@ -111,7 +111,7 @@ async function getPeopleFrequency(dbName) {
     console.log(`People frequency data retrieved successfully from ${dbName}`);
     return result.records.map(record => ({
       entity: record.get('Entity'),
-      frequency: record.get('Frequency')
+      frequency: record.get('Frequency').low
     }));
   } catch (error) {
     console.error(`Error retrieving people frequency data from ${dbName}:`, error);
@@ -121,4 +121,23 @@ async function getPeopleFrequency(dbName) {
   }
 }
 
-export default { session, driver, loadCsvToNeo4j, executeQuery, getPeopleFrequency };
+async function findPhotosByPersonName(dbName, personName) {
+  const session = driver.session({ database: dbName });
+  try {
+    const result = await session.run(
+      "MATCH (photo:Entity)-[:인물]->(person:Entity) " +
+      "WHERE person.name = $personName " +
+      "RETURN photo.name AS photos",
+      { personName: personName }
+    );
+    console.log(`Photos retrieved successfully for person ${personName}`);
+    return result.records.map(record => record.get('photos'));
+  } catch (error) {
+    console.error(`Error retrieving photos for person ${personName}:`, error);
+    throw error;
+  } finally {
+    await session.close();
+  }
+}
+
+export default { session, driver, loadCsvToNeo4j, executeQuery, getPeopleFrequency, findPhotosByPersonName };
