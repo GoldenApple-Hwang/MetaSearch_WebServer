@@ -9,6 +9,8 @@ import csvUploadRouter from './csvUpload.js'
 import sendCsvFile from './sendCsvFile.js'
 import nlqSearch from './nlqSerach.js'
 import getPeopleFrequency from './peopleFrequencyData.js';
+import personSearch from './personSearch.js'
+
 
 
 const router = Router();
@@ -48,6 +50,8 @@ router.use('/nlqsearch', nlqSearch)
 
 //버블차트에 인물 빈도를 시각화 하기 위해 그레프에서 데이터를 가져옴
 router.use('/peoplebubblechart', getPeopleFrequency)
+
+router.use('/personsearch', personSearch)
 
 router.get('*', function (req, res) {
   res.sendFile(join(__dirname, '../../metasearch_knowledgegraph/build/index.html'));
