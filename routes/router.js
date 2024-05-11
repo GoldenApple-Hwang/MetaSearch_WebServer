@@ -51,6 +51,7 @@ router.use('/nlqsearch', nlqSearch)
 //버블차트에 인물 빈도를 시각화 하기 위해 그레프에서 데이터를 가져옴
 router.use('/api/peoplebubblechart', getPeopleFrequency)
 
+//인물 검색 - 동그라미 클릭해서 인물검색하는 것
 router.use('/personsearch', personSearch)
 
 //변경 전 이름, 변경 후 이름, dbName이 들어오면 그래프에서 해당 이름을 변경
