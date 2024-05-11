@@ -49,7 +49,7 @@ router.use('/neo4jserver/csv', sendCsvFile)
 router.use('/nlqsearch', nlqSearch)
 
 //버블차트에 인물 빈도를 시각화 하기 위해 그레프에서 데이터를 가져옴
-router.use('/peoplebubblechart', getPeopleFrequency)
+router.use('/api/peoplebubblechart', getPeopleFrequency)
 
 router.use('/personsearch', personSearch)
 
