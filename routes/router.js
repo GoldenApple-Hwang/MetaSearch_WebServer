@@ -10,6 +10,7 @@ import sendCsvFile from './sendCsvFile.js'
 import nlqSearch from './nlqSerach.js'
 import getPeopleFrequency from './peopleFrequencyData.js';
 import personSearch from './personSearch.js'
+import changePersonName from './changePersonName.js'
 
 
 
@@ -52,6 +53,9 @@ router.use('/nlqsearch', nlqSearch)
 router.use('/api/peoplebubblechart', getPeopleFrequency)
 
 router.use('/personsearch', personSearch)
+
+//변경 전 이름, 변경 후 이름, dbName이 들어오면 그래프에서 해당 이름을 변경
+router.use('/changename', changePersonName)
 
 router.get('*', function (req, res) {
   res.sendFile(join(__dirname, '../../metasearch_knowledgegraph/build/index.html'));
