@@ -11,8 +11,7 @@ import nlqSearch from './nlqSerach.js'
 import getPeopleFrequency from './peopleFrequencyData.js';
 import personSearch from './personSearch.js'
 import changePersonName from './changePersonName.js'
-
-
+import entityTripleData from './entityTripleData.js'
 
 const router = Router();
 
@@ -56,6 +55,9 @@ router.use('/personsearch', personSearch)
 
 //변경 전 이름, 변경 후 이름, dbName이 들어오면 그래프에서 해당 이름을 변경
 router.use('/changename', changePersonName)
+
+//특정 entity 값과 연결된 그래프를 보여주기 위해 그래프에서 데이터를 가져옴
+router.use('/graph/entitytripledata', entityTripleData);
 
 router.get('*', function (req, res) {
   res.sendFile(join(__dirname, '../../metasearch_knowledgegraph/build/index.html'));
