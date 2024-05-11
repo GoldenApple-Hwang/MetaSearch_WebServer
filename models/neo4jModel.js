@@ -64,7 +64,7 @@ async function loadCsvToNeo4j(dbName) {
   const session = driver.session({ database: dbName });
 
   try {
-    // CSV 파일 로드 및 데이터 처리. 노드, 관계 모두 중복되지 않도록. 
+    // CSV 파일 로드 및 데이터 처리. 노드, 관계 모두 중복되지 않도록.
     const result = await session.run(
       `CALL apoc.periodic.iterate(
         "LOAD CSV WITH HEADERS FROM 'file:///${dbName}.csv' AS row RETURN row",
@@ -105,16 +105,19 @@ async function getPeopleFrequency(dbName) {
   try {
     const result = await session.run(
       "MATCH (e1:Entity)-[r:인물]->(e2:Entity) " +
-      "RETURN e2.name AS Entity, COUNT(r) AS Frequency " +
-      "ORDER BY Frequency DESC"
+        "RETURN e2.name AS Entity, COUNT(r) AS Frequency " +
+        "ORDER BY Frequency DESC"
     );
     console.log(`People frequency data retrieved successfully from ${dbName}`);
-    return result.records.map(record => ({
-      entity: record.get('Entity'),
-      frequency: record.get('Frequency').low
+    return result.records.map((record) => ({
+      entity: record.get("Entity"),
+      frequency: record.get("Frequency").low,
     }));
   } catch (error) {
-    console.error(`Error retrieving people frequency data from ${dbName}:`, error);
+    console.error(
+      `Error retrieving people frequency data from ${dbName}:`,
+      error
+    );
     throw error;
   } finally {
     await session.close();
@@ -126,12 +129,12 @@ async function findPhotosByPersonName(dbName, personName) {
   try {
     const result = await session.run(
       "MATCH (photo:Entity)-[:인물]->(person:Entity) " +
-      "WHERE person.name = $personName " +
-      "RETURN photo.name AS photos",
+        "WHERE person.name = $personName " +
+        "RETURN photo.name AS photos",
       { personName: personName }
     );
     console.log(`Photos retrieved successfully for person ${personName}`);
-    return result.records.map(record => record.get('photos'));
+    return result.records.map((record) => record.get("photos"));
   } catch (error) {
     console.error(`Error retrieving photos for person ${personName}:`, error);
     throw error;
@@ -140,4 +143,33 @@ async function findPhotosByPersonName(dbName, personName) {
   }
 }
 
-export default { session, driver, loadCsvToNeo4j, executeQuery, getPeopleFrequency, findPhotosByPersonName };
+async function updateEntityName(dbName, oldName, newName) {
+  const session = driver.session({ database: dbName });
+  try {
+    await session.run(
+      "MATCH (e:Entity {name: $oldName}) " + "SET e.name = $newName",
+      { oldName: oldName, newName: newName }
+    );
+    console.log(
+      `Entity name updated successfully from ${oldName} to ${newName}`
+    );
+  } catch (error) {
+    console.error(
+      `Error updating entity name from ${oldName} to ${newName}:`,
+      error
+    );
+    throw error;
+  } finally {
+    await session.close();
+  }
+}
+
+export default {
+  session,
+  driver,
+  loadCsvToNeo4j,
+  executeQuery,
+  getPeopleFrequency,
+  findPhotosByPersonName,
+  updateEntityName,
+};
