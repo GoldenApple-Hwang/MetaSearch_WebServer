@@ -40,6 +40,7 @@ function getGraphData(result) {
   
       // 노드 간의 관계를 링크 배열에 추가
       links.push({
+        id: r.identity.low,
         source: n.identity.low, // 시작 노드
         target: m.identity.low, // 종료 노드
         type: r.type, // 관계 유형
