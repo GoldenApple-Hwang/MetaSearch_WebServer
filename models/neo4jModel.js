@@ -164,6 +164,22 @@ async function updateEntityName(dbName, oldName, newName) {
   }
 }
 
+async function fetchEntityTripleData(dbName, entityName) {
+  const session = driver.session({ database: dbName });
+  try {
+    const result = await session.run(
+      `MATCH (n:Entity {name: $entityName})-[r]-(m)
+           RETURN n, r, m`,
+      { entityName: entityName }
+    );
+    return result.records; 
+  } catch (error) {
+    throw new Error(`Error fetching data for ${entityName}: ${error}`);
+  } finally {
+    await session.close();
+  }
+}
+
 export default {
   session,
   driver,
@@ -172,4 +188,5 @@ export default {
   getPeopleFrequency,
   findPhotosByPersonName,
   updateEntityName,
+  fetchEntityTripleData
 };
