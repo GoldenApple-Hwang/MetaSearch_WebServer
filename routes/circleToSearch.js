@@ -19,6 +19,7 @@ router.post("/", async (req, res) => {
       return res.status(200).json({ message: "No photos found for the given properties." });
     }
 
+    console.log(photos)
     res.json({ photos }); // 응답으로 사진 이름들을 JSON 형태로 반환
   } catch (error) {
     console.error("Error processing search request:", error);
