@@ -19,10 +19,11 @@ const storage = diskStorage({
         cb(null, path)
     },
     filename: function (req, file, cb) {
-        // 원본 파일 이름을 URL 디코딩하여 사용
-        const decodedFileName = decodeURIComponent(file.originalname);
-        const extension = extname(decodedFileName);
-        const filename = basename(decodedFileName, extension) + extension;
+        // // 원본 파일 이름을 URL 디코딩하여 사용
+        // 디코딩 후 '+'를 공백으로 변환
+        let filename = decodeURIComponent(file.originalname.replace(/\+/g, ' '));
+        const extension = extname(filename);
+        filename = basename(filename, extension) + extension;
         cb(null, filename);
     }
 });
