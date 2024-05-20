@@ -49,7 +49,7 @@ router.use('/neo4jserver/csv', sendCsvFile)
 router.use('/nlqsearch', nlqSearch)
 
 //버블차트에 인물 빈도를 시각화 하기 위해 그레프에서 데이터를 가져옴
-router.use('/api/peoplebubblechart', getPeopleFrequency)
+router.use('/api/peopleFrequency', getPeopleFrequency)
 
 //인물 검색 - 동그라미 클릭해서 인물검색하는 것
 router.use('/personsearch', personSearch)
@@ -59,6 +59,9 @@ router.use('/changename', changePersonName)
 
 //특정 entity 값과 연결된 그래프를 보여주기 위해 그래프에서 데이터를 가져옴
 router.use('/graph/entitytripledata', entityTripleData);
+
+//인물관련 그래프만 보여주기
+// router.use('/graph', )
 
 router.get('*', function (req, res) {
   res.sendFile(join(__dirname, '../../metasearch_knowledgegraph/build/index.html'));
