@@ -172,9 +172,31 @@ async function fetchEntityTripleData(dbName, entityName) {
            RETURN n, r, m`,
       { entityName: entityName }
     );
-    return result.records; 
+    return result.records;
   } catch (error) {
     throw new Error(`Error fetching data for ${entityName}: ${error}`);
+  } finally {
+    await session.close();
+  }
+}
+
+async function fetchSpecificPeopleFrequency(dbName, personNames) {
+  const session = driver.session({ database: dbName });
+  try {
+    const query = `
+      UNWIND $personNames AS personName
+      MATCH (photo:Entity)-[:인물]->(person:Entity {name: personName})
+      RETURN person.name AS Entity, COUNT(photo) AS Frequency
+      ORDER BY Frequency DESC
+    `;
+    const result = await session.run(query, { personNames });
+    return result.records.map(record => ({
+      entity: record.get("Entity"),
+      frequency: record.get("Frequency").low  // Neo4j integer to JavaScript number
+    }));
+  } catch (error) {
+    console.error(`Error retrieving specific people frequency data from ${dbName}:`, error);
+    throw error;
   } finally {
     await session.close();
   }
@@ -188,5 +210,6 @@ export default {
   getPeopleFrequency,
   findPhotosByPersonName,
   updateEntityName,
-  fetchEntityTripleData
+  fetchEntityTripleData,
+  fetchSpecificPeopleFrequency,
 };
