@@ -10,4 +10,15 @@ async function fetchPeopleFrequencyData(dbName) {
   }
 }
 
-export default fetchPeopleFrequencyData;
+async function fetchSpecificPeopleFrequencyData(dbName, personNames) {
+  try {
+    const frequencyData = await neo4jModel.fetchSpecificPeopleFrequency(dbName, personNames);
+    return { frequencies: frequencyData };
+  } catch (error) {
+    console.error(`Error fetching people frequency data: ${error.message}`);
+    throw new Error('Failed to fetch people frequency data');
+  }
+}
+
+
+export { fetchPeopleFrequencyData, fetchSpecificPeopleFrequencyData };
