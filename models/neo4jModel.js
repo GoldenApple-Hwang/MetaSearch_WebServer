@@ -191,11 +191,41 @@ async function fetchSpecificPeopleFrequency(dbName, personNames) {
     `;
     const result = await session.run(query, { personNames });
     return result.records.map(record => ({
-      entity: record.get("Entity"),
+      personName: record.get("Entity"),
       frequency: record.get("Frequency").low  // Neo4j integer to JavaScript number
     }));
   } catch (error) {
     console.error(`Error retrieving specific people frequency data from ${dbName}:`, error);
+    throw error;
+  } finally {
+    await session.close();
+  }
+}
+
+async function fetchOneHopNodesData(dbName, nodeLabel) {
+  const session = driver.session({ database: dbName });
+  try {
+    const result = await session.run(
+      `MATCH (entity:Entity {name: $nodeLabel}), path=(entity)-[*..1]-(connectedNode)
+       RETURN path`,
+      { nodeLabel: nodeLabel }
+    );
+    console.log(result);
+    const segments = []; // 모든 세그먼트를 저장할 단일 배열 생성
+    result.records.forEach((record) => {
+      const path = record.get("path");
+      path.segments.forEach((segment) => {
+        segments.push({
+          id: segment.relationship.identity.low,
+          source: segment.relationship.start.low,
+          type: segment.relationship.type,
+          target: segment.relationship.end.low,
+        });
+      });
+    });
+    return segments; // 평탄화된 세그먼트 배열 반환
+  } catch (error) {
+    console.error(`Error fetching one hop nodes data from ${dbName}:`, error);
     throw error;
   } finally {
     await session.close();
@@ -209,6 +239,7 @@ export default {
   executeQuery,
   getPeopleFrequency,
   findPhotosByPersonName,
+  fetchOneHopNodesData,
   updateEntityName,
   fetchEntityTripleData,
   fetchSpecificPeopleFrequency,
