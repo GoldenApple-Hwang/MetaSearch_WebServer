@@ -12,6 +12,7 @@ import getPeopleFrequency from './peopleFrequencyData.js';
 import personSearch from './personSearch.js'
 import changePersonName from './changePersonName.js'
 import entityTripleData from './entityTripleData.js'
+import photoTripleData from './photoTripleData.js'
 
 const router = Router();
 
@@ -59,6 +60,9 @@ router.use('/changename', changePersonName)
 
 //특정 entity 값과 연결된 그래프를 보여주기 위해 그래프에서 데이터를 가져옴
 router.use('/graph/entitytripledata', entityTripleData);
+
+//특정 사진에 대한 트리플 데이터를 그래프에서 가져옴
+router.use('/api/photoTripleData', photoTripleData);
 
 //인물관련 그래프만 보여주기
 // router.use('/graph', )
