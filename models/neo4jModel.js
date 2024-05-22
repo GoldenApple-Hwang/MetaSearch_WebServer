@@ -202,6 +202,27 @@ async function fetchSpecificPeopleFrequency(dbName, personNames) {
   }
 }
 
+async function fetchTriplesAsString(dbName, photoName) {
+  const session = driver.session({ database: dbName });
+  try {
+    const result = await session.run(
+      "MATCH (photo:Entity {name: $photoName})-[r]->(related) " +
+      "RETURN photo.name AS Photo, type(r) AS Relationship, related.name AS RelatedEntity " +
+      "ORDER BY type(r), related.name",
+      { photoName }
+    );
+    const textData = result.records.map(record => 
+      `${record.get('Photo')},${record.get('Relationship')},${record.get('RelatedEntity')}`
+    ).join('\n');
+    return textData; // 문자열 데이터 리턴
+  } catch (error) {
+    console.error('Error fetching triples:', error);
+    throw error;
+  } finally {
+    await session.close();
+  }
+}
+
 async function fetchOneHopNodesData(dbName, nodeLabel) {
   const session = driver.session({ database: dbName });
   try {
@@ -243,4 +264,5 @@ export default {
   updateEntityName,
   fetchEntityTripleData,
   fetchSpecificPeopleFrequency,
+  fetchTriplesAsString
 };
