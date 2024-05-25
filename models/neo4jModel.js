@@ -14,6 +14,22 @@ function session(options) {
   return driver.session(options);
 }
 
+//데이터베이스의 존재 여부를 확인하는 함수
+async function checkDatabaseExists(dbName) {
+  const systemSession = driver.session({ database: "system" });
+  try {
+    let result = await systemSession.run(`SHOW DATABASES`);
+    const databases = result.records.map((record) => record.get("name"));
+    return databases.includes(dbName);
+  } catch (error) {
+    console.error("Error checking database existence:", error);
+    throw error;
+  } finally {
+    await systemSession.close();
+  }
+}
+
+
 async function createDatabaseIfNotExists(dbName) {
   const systemSession = driver.session({ database: "system" }); // Neo4j 데이터베이스 관리 시스템(DBMS)의 관리 작업을 수행하는 데 사용되는 특별한 데이터베이스
   try {
