@@ -29,7 +29,7 @@ async function checkDatabaseExists(dbName) {
   }
 }
 
-
+//데이터베이스가 없으면 해당 db를 생성하는 함수
 async function createDatabaseIfNotExists(dbName) {
   const systemSession = driver.session({ database: "system" }); // Neo4j 데이터베이스 관리 시스템(DBMS)의 관리 작업을 수행하는 데 사용되는 특별한 데이터베이스
   try {
@@ -62,6 +62,7 @@ async function createDatabaseIfNotExists(dbName) {
   }
 }
 
+//데이터베이스에서 그래프를 삭제하는 함수
 async function clearDatabase(dbName) {
   const session = driver.session({ database: dbName });
   try {
@@ -74,6 +75,7 @@ async function clearDatabase(dbName) {
   }
 }
 
+//db에 csv 파일을 그래프형태로 로드하는 함수
 async function loadCsvToNeo4j(dbName) {
   await createDatabaseIfNotExists(dbName); //데이터베이스가 존재하지 않으면 먼저 데이터베이스를 만든다
   await clearDatabase(dbName); // 트리플 삭제를 반영하기 위해 먼저 데이터베이스를 비움
@@ -116,6 +118,7 @@ async function executeQuery(dbName, query) {
   }
 }
 
+//그래프 내의 전체 인물들의 빈도수를 쿼리하는 함수
 async function getPeopleFrequency(dbName) {
   const session = driver.session({ database: dbName });
   try {
@@ -140,6 +143,7 @@ async function getPeopleFrequency(dbName) {
   }
 }
 
+//그래프에서 인물 이름으로 사진을 찾는 함수
 async function findPhotosByPersonName(dbName, personName) {
   const session = driver.session({ database: dbName });
   try {
@@ -159,6 +163,7 @@ async function findPhotosByPersonName(dbName, personName) {
   }
 }
 
+//그래프의 엔티티 이름을 변경하는 함수 
 async function updateEntityName(dbName, oldName, newName) {
   const session = driver.session({ database: dbName });
   try {
@@ -180,6 +185,7 @@ async function updateEntityName(dbName, oldName, newName) {
   }
 }
 
+// 특정 엔티티와 관련된 트리플 데이터를 쿼리하는 함수
 async function fetchEntityTripleData(dbName, entityName) {
   const session = driver.session({ database: dbName });
   try {
@@ -196,6 +202,7 @@ async function fetchEntityTripleData(dbName, entityName) {
   }
 }
 
+// 특정 인물 노드의 빈도수를 쿼리하는 함수
 async function fetchSpecificPeopleFrequency(dbName, personNames) {
   const session = driver.session({ database: dbName });
   try {
@@ -218,6 +225,7 @@ async function fetchSpecificPeopleFrequency(dbName, personNames) {
   }
 }
 
+// 특정 엔티티에 대한 트리플 정보를 리턴하는 함수 (사진 설명에 사용하기 위해)
 async function fetchTriplesAsString(dbName, photoName) {
   const session = driver.session({ database: dbName });
   try {
@@ -272,6 +280,7 @@ async function fetchOneHopNodesData(dbName, nodeLabel) {
 export default {
   session,
   driver,
+  checkDatabaseExists,
   loadCsvToNeo4j,
   executeQuery,
   getPeopleFrequency,
