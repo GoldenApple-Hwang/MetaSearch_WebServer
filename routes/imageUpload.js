@@ -18,7 +18,7 @@ router.post("/", upload.fields([{ name: 'image' }]), (req, res, next) => {
     if (!imageFile) {
       throw new Error("No image file uploaded.");
     }
-    validateImage(req.file);
+    //validateImage(imageFile);
     res.send("images uploaded successfully");
   } catch (error) {
     res.status(400).send(error.message);
