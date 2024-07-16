@@ -277,6 +277,23 @@ async function fetchOneHopNodesData(dbName, nodeLabel) {
   }
 }
 
+// 특정 엔티티를 삭제하는 함수
+async function deleteEntityByName(dbName, entityName) {
+  const session = driver.session({ database: dbName });
+  try {
+    await session.run(
+      "MATCH (e:Entity {name: $name}) DETACH DELETE e",
+      { name: entityName }
+    );
+    console.log(`Entity with name ${entityName} deleted from ${dbName}`);
+  } catch (error) {
+    console.error(`Error deleting entity from ${dbName}:`, error);
+    throw error;
+  } finally {
+    await session.close();
+  }
+}
+
 export default {
   session,
   driver,
@@ -289,5 +306,6 @@ export default {
   updateEntityName,
   fetchEntityTripleData,
   fetchSpecificPeopleFrequency,
-  fetchTriplesAsString
+  fetchTriplesAsString,
+  deleteEntityByName
 };
