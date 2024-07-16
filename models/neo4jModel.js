@@ -92,7 +92,7 @@ async function loadCsvToNeo4j(dbName) {
          CALL apoc.merge.relationship(e1, row.Relationship, {}, {}, e2, {})
          YIELD rel
          RETURN e1, rel, e2",
-        {batchSize:1000, parallel:true}
+        {batchSize:500, parallel:false}
       )`
     );
     console.log(`${dbName} loaded to Neo4j ${dbName} database successfully`);
