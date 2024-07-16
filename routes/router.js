@@ -13,6 +13,8 @@ import personSearch from './personSearch.js'
 import changePersonName from './changePersonName.js'
 import entityTripleData from './entityTripleData.js'
 import photoTripleData from './photoTripleData.js'
+import deleteEntity from './deleteEntity.js'
+
 
 const router = Router();
 
@@ -63,6 +65,11 @@ router.use('/graph/entitytripledata', entityTripleData);
 
 //특정 사진에 대한 트리플 데이터를 그래프에서 가져옴
 router.use('/api/photoTripleData', photoTripleData);
+
+// 그래프에서 특정 노드 삭제
+router.use('/neo4j/deleteEntity', deleteEntity);
+
+
 
 //인물관련 그래프만 보여주기
 // router.use('/graph', )
