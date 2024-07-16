@@ -14,7 +14,7 @@ import changePersonName from './changePersonName.js'
 import entityTripleData from './entityTripleData.js'
 import photoTripleData from './photoTripleData.js'
 import deleteEntity from './deleteEntity.js'
-
+import deleteImage from './imageDelete.js'
 
 const router = Router();
 
@@ -69,7 +69,8 @@ router.use('/api/photoTripleData', photoTripleData);
 // 그래프에서 특정 노드 삭제
 router.use('/neo4j/deleteEntity', deleteEntity);
 
-
+// 앱에서 삭제된 이미지 서버에서도 삭제
+router.use('/deleteImage', deleteImage);
 
 //인물관련 그래프만 보여주기
 // router.use('/graph', )
